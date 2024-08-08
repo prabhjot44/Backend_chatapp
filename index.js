@@ -8,7 +8,7 @@ const app = express();
 
 // Configure CORS for Express
 app.use(cors({
-  origin: process.env.CORS_ORIGIN, // Allow this origin
+  origin: process.env.CORS_ORIGIN || '*', // Default to '*' if CORS_ORIGIN is not set
 }));
 
 const server = http.createServer(app);
@@ -16,7 +16,7 @@ const server = http.createServer(app);
 // Create and configure Socket.io server
 const io = new Server(server, {
   cors: {
-    origin: process.env.CORS_ORIGIN,
+    origin: process.env.CORS_ORIGIN || '*', // Default to '*' if CORS_ORIGIN is not set
     methods: ["GET", "POST"],
   },
 });
@@ -40,6 +40,8 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(process.env.PORT, () => {
-  console.log(`SERVER RUNNING ON PORT ${process.env.PORT}`);
+// Listen on the port provided by Render
+const port = process.env.PORT || 3000; // Default to 3000 for local development
+server.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
