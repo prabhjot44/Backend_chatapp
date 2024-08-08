@@ -4,12 +4,18 @@ const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
 app.use(cors());
+require('dotenv').config();
+const cors = require('cors');
+
+app.use(cors({
+  origin: process.env.CORS_ORIGIN  // Allow this origin
+}));
 
 const server = http.createServer(app);
-
+// create server 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.CORS_ORIGIN,
     methods: ["GET", "POST"],
   },
 });
@@ -40,7 +46,7 @@ socket.on("join_room", (data) => {
   });
 });
 
-server.listen(3001, () => {
+server.listen(process.env.PORT, () => {
   console.log("SERVER RUNNING");
 });
 
