@@ -24,11 +24,7 @@ const server = http.createServer(app);
 // ✅ Socket.IO CORS (FIXED)
 const io = new Server(server, {
   cors: {
-<<<<<<< HEAD
     origin: "https://frontend-chatapp-xi.vercel.app" ,
-=======
-    origin: allowedOrigins,
->>>>>>> fa31f7d (new socket code)
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -59,27 +55,15 @@ socket.on("send_message", (data) => {
   });
 });
 
-<<<<<<< HEAD
 const port = process.env.PORT || 3001; // Default to 3001 if PORT is not set
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);
-=======
-// ✅ Test Route (optional)
-app.get("/", (req, res) => {
-  res.send("Server is running 🚀");
->>>>>>> fa31f7d (new socket code)
 });
 
 // ✅ PORT fix for Render
 const PORT = process.env.PORT || 3001;
 
-<<<<<<< HEAD
 
 
 
  
-=======
-server.listen(PORT, () => {
-  console.log(`🚀 SERVER RUNNING ON PORT ${PORT}`);
-});
->>>>>>> fa31f7d (new socket code)
