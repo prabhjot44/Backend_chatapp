@@ -8,6 +8,7 @@ const { Server } = require("socket.io");
 const allowedOrigins = [
   "http://localhost:3000",
   "https://frontend-chatapp-xi.vercel.app",
+  "https://prabhchat.vercel.app"
 ];
 
 // ✅ Express CORS (FIXED)
