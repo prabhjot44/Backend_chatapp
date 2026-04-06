@@ -45,10 +45,36 @@ io.on("connection", (socket) => {
     io.to(data.roomName).emit("user_joined", message);
   });
 
-  // Send Message
-socket.on("send_message", (data) => {
-  io.to(data.roomName).emit("receive_message", data);
-});
+  // Send Message with status tracking
+  socket.on("send_message", (data) => {
+    // Add a unique messageId if not provided
+    const messageId = data.messageId || `${socket.id}-${Date.now()}`;
+    const messageData = { ...data, messageId, status: "sent" };
+
+    // Notify sender that message was sent
+    socket.emit("message_sent", { messageId });
+
+    // Send to room (including sender)
+    io.to(data.roomName).emit("receive_message", messageData);
+  });
+
+  // Receiver acknowledges message was delivered
+  socket.on("message_delivered", (data) => {
+    // data: { messageId, roomName }
+    io.to(data.roomName).emit("message_delivered", {
+      messageId: data.messageId,
+      status: "delivered",
+    });
+  });
+
+  // Receiver has seen the message
+  socket.on("message_seen", (data) => {
+    // data: { messageId, roomName }
+    io.to(data.roomName).emit("message_seen", {
+      messageId: data.messageId,
+      status: "seen",
+    });
+  });
 
   // Disconnect
   socket.on("disconnect", () => {
